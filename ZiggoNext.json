@@ -1,0 +1,63 @@
+{"name":"ZiggoNext", 
+  "manufacturer":"Ziggo",
+  "version":5,
+  "type":"DVB", 
+  "variables":{
+    "MyStatus":""
+  },
+  "switches":{
+    "MUTE" : {"label":"Mute"}
+  },
+  "labels":{
+    "CurrentStatus" : {"label":" ", "listen":"MyStatus", "actionlisten":"VolumePlayedDisplay"}
+  },
+  "buttons":{
+    "POWER TOGGLE": {"label":"", "type":"static", "command":""},
+    "VOLUME UP": {"label":"", "type":"static", "command":""},
+    "VOLUME DOWN": {"label":"", "type":"static", "command":""},
+    "CHANNEL UP": {"label":"", "type":"static", "command":""},
+    "CHANNEL DOWN": {"label":"", "type":"static", "command":""},
+    "CURSOR UP": {"label":"", "type":"static", "command":""},
+    "CURSOR DOWN": {"label":"", "type":"static", "command":""},
+    "CURSOR LEFT": {"label":"", "type":"static", "command":""},
+    "CURSOR RIGHT": {"label":"", "type":"static", "command":""},
+    "CURSOR ENTER": {"label":"", "type":"static", "command":""},
+    "MUTE TOGGLE": {"label":"", "type":"static", "command":""},
+    "MENU": {"label":"", "type":"static", "command":""},
+    "BACK": {"label":"", "type":"static", "command":""},
+    "FUNCTION RED": {"label":"", "type":"static", "command":""},
+    "FUNCTION GREEN": {"label":"", "type":"static", "command":""},
+    "FUNCTION YELLOW": {"label":"", "type":"static", "command":""},
+    "FUNCTION BLUE": {"label":"", "type":"static", "command":""},
+    "RETURN": {"label":"", "type":"static", "command":""},
+    "DIGIT 0": {"label":"", "type":"static", "command":""},
+    "DIGIT 1": {"label":"", "type":"static", "command":""},
+    "DIGIT 2": {"label":"", "type":"static", "command":""},
+    "DIGIT 3": {"label":"", "type":"static", "command":""},
+    "DIGIT 4": {"label":"", "type":"static", "command":""},
+    "DIGIT 5": {"label":"", "type":"static", "command":""},
+    "DIGIT 6": {"label":"", "type":"static", "command":""},
+    "DIGIT 7": {"label":"", "type":"static", "command":""},
+    "DIGIT 8": {"label":"", "type":"static", "command":""},
+    "DIGIT 9": {"label":"", "type":"static", "command":""},
+    "PLAY": {"label":"", "type":"static", "command":""},
+    "PAUSE": {"label":"", "type":"static", "command":""},
+    "STOP": {"label":"", "type":"static", "command":""},
+    "REVERSE": {"label":"", "type":"static", "command":""},
+    "FORWARD": {"label":"", "type":"static", "command":""},
+    "PREVIOUS": {"label":"", "type":"static", "command":""},
+    "NEXT": {"label":"", "type":"static", "command":""},
+    "SKIP SECONDS BACKWARD": {"label":"", "type":"static", "command":""},
+    "SKIP SECONDS FORWARD": {"label":"", "type":"static", "command":""},
+    "MY RECORDINGS": {"label":"", "type":"static", "command":""},
+    "RECORD": {"label":"", "type":"static", "command":""},
+    "TV": {"label":"", "type":"static", "command":""},
+    "GUIDE": {"label":"", "type":"static", "command":""},
+    "INFO": {"label":"", "type":"static", "command":""},
+    "LIVE": {"label":"", "type":"static", "command":""}
+  },
+  "sliders":{
+    "VOLUME": {"label":"", "unit" : "db"}
+  }
+}
+
