@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const server = express();
 const varClientId = makeId(30);
 const config = require('./config.json');
+const { time } = require('console');
 
 const baseUrl = 'https://web-api-prod-obo.horizon.tv/oesp/v3/NL/nld/web';
 const sessionUrl = baseUrl + '/session';
@@ -30,6 +31,7 @@ let mqttUsername;
 let mqttPassword;
 let setopboxId;
 let setopboxState;
+let setopboxStatus;
 let stbDevicesCount = 0;
 let stations = [];
 let uiStatus;
@@ -227,10 +229,9 @@ const startMqttClient = async () => {
 			}
 						
 			if(payloadValue.status){
-				
 				if(payloadValue.status.uiStatus === "mainUI"){
-
 					if(payloadValue.status.playerState.sourceType === "linear"){
+                        logger.debug("source = 'linear'")
 						filtered = _.where(stations, {serviceId: payloadValue.status.playerState.source.channelId});
 						uiStatus = payloadValue;
 						currentChannelId = uiStatus.status.playerState.source.channelId;
@@ -244,25 +245,29 @@ const startMqttClient = async () => {
 								
 					}
 					else if(payloadValue.status.playerState.sourceType === "replay"){
-											
-						uiStatus = payloadValue;
-						
+                        logger.debug("source = 'replay'")	
+						uiStatus = payloadValue;						
 					}
 					else if(payloadValue.status.playerState.sourceType === "VOD"){
+                        logger.debug("source = 'VOD'")	
 						uiStatus = payloadValue;
 					}	
 					else if(payloadValue.status.playerState.sourceType === "nDVR"){
+                        logger.debug("source = 'nDVR'")	
 						uiStatus = payloadValue;
 					}		
 					else if(payloadValue.status.playerState.sourceType === "reviewbuffer"){
+                        logger.debug("source = 'reviewbuffer'")	
 						//pause
 						uiStatus = payloadValue;
 					}						
 				}
 				else if(payloadValue.status.uiStatus === "apps"){
+                    logger.debug("source = 'apps'")	
 					currentChannel = payloadValue.status.appsState.appName ;
 					//console.log(payloadValue.status.appsState.appName );
-				}				
+				}	
+                else logger.debug("Unknown source")			
 				
 			}
 
@@ -320,6 +325,59 @@ function sendKey(key) {
 	};
 	mqttClient.publish(topic , JSON.stringify(payload));	
 };
+
+async function sendAction(action) {
+    switch(action){
+        case 'Radio':
+            sendActionRadio(action);
+            logger.info(`Sent Radio action: ${action}`);
+            break;
+        case 'PowerOn':
+            sendActionPowerOn("ONLINE_RUNNING");
+            logger.info(`Sent power action: ${action}`);
+            break;
+        case 'PowerOff':
+            sendActionPowerOn("ONLINE_STANDBY");
+            logger.info(`Sent power action: ${action}`);
+            break;      
+    }
+	
+};
+function sendActionPowerOn(DesiredState) {
+    if(setopboxState){
+        if (setopboxState != DesiredState) {
+            sendKey("Power");
+            setopboxState = DesiredState;  // Should be set by response from MQTT, just to be sure
+            logger.info("Sent Power command");
+        }
+        else
+            logger.info("Box already in " + DesiredState);
+        
+    }
+}
+
+
+async function sendActionRadio(action) {
+    // bit of a tricky code to set STB into radio mode, last channel used.
+    // It does so by feeding a number of button-presses; fails sometimes, works 90% of the time
+    sendKey("TV")									// to get out of current session
+    await new Promise(r => setTimeout(r, 900));
+    sendKey("Escape")								// to be sure
+    await new Promise(r => setTimeout(r, 900));
+    sendKey("MediaTopMenu")							// Open top menu
+    await new Promise(r => setTimeout(r, 1000));
+    sendKey("ArrowDown")							// next are all navigating through topmenu
+	await new Promise(r => setTimeout(r, 1100));
+	sendKey("ArrowDown")
+	await new Promise(r => setTimeout(r, 1100));
+	sendKey("ArrowDown")
+	await new Promise(r => setTimeout(r, 1100));
+	sendKey("ArrowDown")
+	await new Promise(r => setTimeout(r, 1100));
+	sendKey("Enter")
+	await new Promise(r => setTimeout(r, 1100));
+	sendKey("Enter")								// Finally, select "first recent used"
+}
 
 function playRecording(recordingId) {
 	logger.debug(`Play Recording: ${recordingId}`);
@@ -416,11 +474,15 @@ getSession()
 				case 'sendKey':
 					sendKey(req.body.key);
 					break;						
+				case 'sendAction':
+					sendAction(req.body.theAction);
+					break;						
 				case 'getUiStatus':
 					getUiStatus();
 					break;											
 				default:
 					res.json({"Status": "Error"});
+                    return;
 					break;
 			}
 			res.json({"Status": "Ok"});

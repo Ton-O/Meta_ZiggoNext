@@ -1,6 +1,6 @@
 {"name":"ZiggoNext", 
   "manufacturer":"Ziggo",
-  "version":5,
+  "version":6,
   "type":"DVB", 
   "variables":{
     "MyStatus":""
@@ -54,8 +54,20 @@
     "TV": {"label":"", "type":"static", "command":""},
     "GUIDE": {"label":"", "type":"static", "command":""},
     "INFO": {"label":"", "type":"static", "command":""},
-    "LIVE": {"label":"", "type":"static", "command":""}
-  },
+    "LIVE": {"label":"", "type":"static", "command":""},
+    "TOPMENU": {"label":"", "type":"static", "command":""},
+    "Radio": {"label":"", "type":"static", "command":"",
+      "evaldo":[{"test":true,"then":"Radio#2", "or":"Radio#2"}]},
+    "Radio#2": {"label":"", "type":"static", "command":"",
+      "evaldo":[{"test":true,"then":"Radio#3", "or":""}]},
+    "Radio#3": {"label":"", "type":"static", "command":"",
+      "evaldo":[{"test":true,"then":"Radio#4", "or":""}]},
+    "Radio#4": {"label":"", "type":"static", "command":"",
+      "evaldo":[{"test":true,"then":"Radio#5", "or":""}]},
+    "Radio#5": {"label":"", "type":"static", "command":"",
+      "evaldo":[{"test":true,"then":"Radio#6", "or":""}]},
+    "Radio#6": {"label":"", "type":"static", "command":""}  
+    },
   "sliders":{
     "VOLUME": {"label":"", "unit" : "db"}
   }
