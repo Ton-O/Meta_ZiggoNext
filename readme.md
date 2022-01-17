@@ -10,7 +10,7 @@ We're assuming you are using Meta in /opt/meta
  1. Login to your meta-system.
  2. Goto /opt directory (cd /opt)
  3. Download the NextRemote package from Github containing the listener: 
-    git clone https://github.com/basst85/NextRemoteJs.git (a slightly modified version of this solution is on my own Github (https://github.com/Ton-O/NextRemoteJs) that has support for starting Radio and a more robust poweron/off scheme)
+    git clone https://github.com/basst85/NextRemoteJs.git 
  4. Goto directory where NextRemote is installed: cd /opt/NextRemoteJs/
  5. Configure the variables in config.json: fill in your Ziggo-username and password (the one you use to login to the ziggo-site) AND change webPort from 8080 into 5385!!!!
  6. Install package: npm install
